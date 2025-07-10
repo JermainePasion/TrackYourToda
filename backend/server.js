@@ -5,6 +5,7 @@ const fareRoute = require("./routes/fare");
 const destinationRoutes = require("./routes/destinations");
 const MONGODB_URI = process.env.MONGODB_URI;
 const rideRoutes = require('./routes/ride');
+const terminalRoutes = require('./routes/terminal');
 
 const mongoose = require('mongoose');
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 app.use("/api/fare", fareRoute);
 app.use("/api/destinations", destinationRoutes);
 app.use('/api/rides', rideRoutes);
+app.use('/api/terminals', terminalRoutes);
 
 
 const PORT = 3000;
