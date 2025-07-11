@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Terminal = require('../models/terminal');
 
-// Get all terminals
+// Get all terminalss
 router.get('/', async (req, res) => {
   try {
     const terminals = await Terminal.find();
