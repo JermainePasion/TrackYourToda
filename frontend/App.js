@@ -1,18 +1,14 @@
 import "./global.css";
-import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
+import DashboardLayout from "./layouts/DashboardLayout";
 import { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import SplashScreen from './components/SplashScreen';
 import { StatusBar } from 'expo-status-bar';
+import Header from "./components/Header";
 
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
-
-  const [fontsLoaded] = useFonts({
-    BebasNeue_400Regular,
-  });
-
   
 
   useEffect(() => {
@@ -28,17 +24,12 @@ export default function App() {
     return <SplashScreen />;
   }
 
-  if (!fontsLoaded) {
-    return null; // Or your own loading screen
-  }
-
-  // Your main app content:
+ 
   return (
-    <View className="flex-1 items-right justify- bg-black">
-      <Text className="font-bebas text-primary text-4xl">
-  Hello world.
-</Text>
-      <StatusBar style="auto" />
-    </View>
+    <DashboardLayout>
+      <Text className="text-lg text-primary font-bebas">
+        This is your Home Page.
+      </Text>
+    </DashboardLayout>
   );
 }
