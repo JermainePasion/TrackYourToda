@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Header() {
   return (
-    <View style={{ width: '100%', alignItems: 'center', marginVertical: 35 }}>
+    <View style={{ width: '100%', alignItems: 'center', marginVertical: 30 }}>
       <MaskedView
         style={{ height: 60, width: 300 }}
         maskElement={

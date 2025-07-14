@@ -27,9 +27,21 @@ export default function App() {
  
   return (
     <DashboardLayout>
-      <Text className="text-lg text-primary font-bebas">
-        This is your Home Page.
-      </Text>
+      <View className="items-center justify-center">
+        <Text className="text-xl text-primary font-bebas">
+          This is your Home Page!@
+        </Text>
+        <Text className="text-xl text-primary font-bebas">
+          This is your Home Page!@
+        </Text>
+        <Text className="text-xl text-primary font-bebas">
+          This is your Home Page!@
+        </Text>
+        <Text className="text-xl text-primary font-bebas">
+          This is your Home Page!@
+        </Text>
+      </View>
+      <StatusBar style="auto" />
     </DashboardLayout>
   );
 }
