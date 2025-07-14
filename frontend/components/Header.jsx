@@ -6,12 +6,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Header() {
   return (
-    <View style={{ width: '100%', alignItems: 'center', marginVertical: 30 }}>
+    <View style={{ width: '100%', alignItems: 'center', marginVertical: 35 }}>
       <MaskedView
         style={{ height: 60, width: 300 }}
         maskElement={
           <Text
-            className="text-5xl text-center tracking-widest"
+            className="text-4xl text-center font-bold tracking-widest"
             style={{
               fontFamily: 'BebasNeue_400Regular',
               color: 'black',
