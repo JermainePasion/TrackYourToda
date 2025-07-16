@@ -1,10 +1,11 @@
+import "../global.css";
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function Settings() {
+export default function Matrix() {
   return (
     <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-2xl font-bebas text-primary">This is your Settings Page</Text>
+      <Text className="text-2xl font-bebas text-primary">This is your Matrix Page</Text>
     </View>
   );
 }

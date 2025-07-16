@@ -5,6 +5,8 @@ import { View, Text } from 'react-native';
 import SplashScreen from './components/SplashScreen';
 import { StatusBar } from 'expo-status-bar';
 import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+
 
 
 export default function App() {
@@ -26,7 +28,9 @@ export default function App() {
 
  
   return (
-    <DashboardLayout>
-    </DashboardLayout>
+    
+    <Navbar>
+      
+    </Navbar>
   );
 }
