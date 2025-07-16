@@ -23,8 +23,6 @@ mongoose.connect(
 app.use(express.json()); 
 
 
-
-
 app.get("/", (req, res) => {
   res.send("TYT server running!");
 });
