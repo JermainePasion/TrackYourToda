@@ -1,24 +1,21 @@
 import "./global.css";
-import DashboardLayout from "./layouts/DashboardLayout";
 import { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import SplashScreen from './components/SplashScreen';
-import { StatusBar } from 'expo-status-bar';
-import Header from "./components/Header";
-import Navbar from "./components/Navbar";
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import SplashScreen from './components/SplashScreen';
+import Home from "./screens/Home";
+import SelectLocation from "./components/SelectLocation"; // or wherever your component is
+import { StatusBar } from 'expo-status-bar';
 
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
-  
 
   useEffect(() => {
-    // Splash stays visible ~3 seconds total
     const timer = setTimeout(() => {
       setShowSplash(false);
     }, 3000);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -26,12 +23,13 @@ export default function App() {
     return <SplashScreen />;
   }
 
- 
   return (
-    <>
-      <NavigationContainer>
-      <Navbar />
+    <NavigationContainer>
+      <StatusBar style="auto" />
+      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="SelectLocation" component={SelectLocation} />
+      </Stack.Navigator>
     </NavigationContainer>
-    </>
   );
 }
