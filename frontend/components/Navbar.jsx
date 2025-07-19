@@ -7,6 +7,7 @@ import SelectLocation from "./SelectLocation";
 import History from "../screens/History";
 import Matrix from "../screens/Matrix";
 import Settings from "../screens/Settings";
+import MapPicker from "./MapPicker";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ function HomeStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
+      <Stack.Screen name="MapPicker" component={MapPicker} />
     </Stack.Navigator>
   );
 }

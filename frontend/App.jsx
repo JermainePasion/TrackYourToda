@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from './components/SplashScreen';
-import Home from "./screens/Home";
-import SelectLocation from "./components/SelectLocation"; // or wherever your component is
+import MapPicker from "./components/MapPicker";
+import Navbar from "./components/Navbar"; // This is your Tab Navigator
 import { StatusBar } from 'expo-status-bar';
+import SelectLocation from "./components/SelectLocation";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,8 +27,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar style="auto" />
-      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={Home} />
+      <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="MainTabs" component={Navbar} />
+        <Stack.Screen name="MapPicker" component={MapPicker} />
         <Stack.Screen name="SelectLocation" component={SelectLocation} />
       </Stack.Navigator>
     </NavigationContainer>
