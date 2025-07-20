@@ -7,6 +7,8 @@ import MapPicker from "./components/MapPicker";
 import Navbar from "./components/Navbar"; // This is your Tab Navigator
 import { StatusBar } from 'expo-status-bar';
 import SelectLocation from "./components/SelectLocation";
+import { useFonts } from 'expo-font';
+import { BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 
 const Stack = createNativeStackNavigator();
 
