@@ -44,7 +44,7 @@ export default function Home() {
             }} >DISTANCE:</Text>
             <Text className= "mb-3 text-3xl text-[#643502]" >{fareData.distanceKm} KM</Text>
             <Text>Duration:</Text>
-            <Text className= "mb-3 text-3xl text-[#643502]">{fareData.durationMinutes} MINS</Text>
+            <Text className= "mb-3 text-3xl text-[#643502]">{fareData.durationMinutes} MIN</Text>
           </View>
     
           <View className="flex-1 min-w-[48%] p-6 bg-gray-100 rounded-xl mb-4 items-center">
