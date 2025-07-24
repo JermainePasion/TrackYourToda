@@ -15,7 +15,8 @@ import * as Location from "expo-location";
 import DashboardLayout from "../layouts/DashboardLayout";
 import axios from "axios";
 import useLocationLogic from "../hooks/useLocationLogic";
-
+import { getRouteGeometryORS } from "../utils/getRouteGeometryORS";
+import { ORS_API_KEY } from '@env';
 export default function Home() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -29,6 +30,32 @@ export default function Home() {
     setDestinationLocation,
   } = useLocationLogic();
 
+  const [routeCoords, setRouteCoords] = useState([]);
+  useEffect(() => {
+  const fetchRoute = async () => {
+    if (startLocation && destinationLocation) {
+      try {
+        const coords = await getRouteGeometryORS(
+          [startLocation.longitude, startLocation.latitude],
+          [destinationLocation.longitude, destinationLocation.latitude],
+          ORS_API_KEY
+        );
+
+        const formattedCoords = coords.map(([lng, lat]) => ({
+          latitude: lat,
+          longitude: lng,
+        }));
+
+        setRouteCoords(formattedCoords);
+      } catch (error) {
+        console.error("Failed to fetch route:", error);
+        Alert.alert("Route error", "Unable to get directions.");
+      }
+    }
+  };
+
+  fetchRoute();
+}, [startLocation, destinationLocation]);
 
   return (
     <DashboardLayout>
@@ -62,24 +89,25 @@ export default function Home() {
           <ActivityIndicator size="large" color="#C15353" />
         ) : (
           <MapView
-  style={{ width: "100%", height: 250 }}
-  region={region}
->
-  {startLocation && (
-    <Marker coordinate={startLocation} title="Start" pinColor="green" />
-  )}
-  {destinationLocation && (
-    <Marker coordinate={destinationLocation} title="Destination" />
-  )}
+              style={{ width: "100%", height: 250 }}
+              region={region}
+            >
+              {startLocation && (
+                <Marker coordinate={startLocation} title="Start" pinColor="green" />
+              )}
+              {destinationLocation && (
+                <Marker coordinate={destinationLocation} title="Destination" />
+              )}
 
-  {startLocation && destinationLocation && (
-    <Polyline
-      coordinates={[startLocation, destinationLocation]}
-      strokeColor="#000" // black line
-      strokeWidth={3}
-    />
-  )}
-</MapView>
+              {routeCoords.length > 0 && (
+                <Polyline
+                  coordinates={routeCoords}
+                  strokeColor="#fb9e3a"
+                  strokeWidth={4}
+                />
+              )}
+          </MapView>
+
         )}
 
           <View className="mt-5 flex-row justify-between space-x-4">
@@ -119,7 +147,7 @@ export default function Home() {
                 })
               }
             >
-              <Ionicons name="location-sharp" size={24} color="red" />
+              <Ionicons name="location-sharp" size={24} color="green" />
               <Text className="text-xs font-bold text-center mt-1">
                 TODA /{"\n"}DESTINATION
               </Text>
