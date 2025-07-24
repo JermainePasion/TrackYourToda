@@ -9,7 +9,8 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Location from "expo-location";
 import DashboardLayout from "../layouts/DashboardLayout";
 import axios from "axios";
@@ -56,61 +57,85 @@ export default function Home() {
         </View>
         )}  
 
-        <Text className="text-xl font-bold mb-4">Select Route!</Text>
 
         {loading || !region ? (
           <ActivityIndicator size="large" color="#C15353" />
         ) : (
           <MapView
-            style={{ width: "100%", height: 250 }}
-            region={region}
-          >
-            {startLocation && (
-              <Marker coordinate={startLocation} title="Start" pinColor="green" />
-            )}
-            {destinationLocation && (
-              <Marker coordinate={destinationLocation} title="Destination" />
-            )}
-          </MapView>
+  style={{ width: "100%", height: 250 }}
+  region={region}
+>
+  {startLocation && (
+    <Marker coordinate={startLocation} title="Start" pinColor="green" />
+  )}
+  {destinationLocation && (
+    <Marker coordinate={destinationLocation} title="Destination" />
+  )}
+
+  {startLocation && destinationLocation && (
+    <Polyline
+      coordinates={[startLocation, destinationLocation]}
+      strokeColor="#000" // black line
+      strokeWidth={3}
+    />
+  )}
+</MapView>
         )}
 
-        <View className="mt-5">
-          <Pressable
-            className="bg-white rounded-xl p-4 mb-3 border border-gray-300 shadow"
-            onPress={() =>
-              navigation.navigate("MapPicker", {
-                type: "start",
-                existingStart: startLocation,
-                existingDestination: destinationLocation,
-              })
-            }
-          >
-            <Text className="text-base font-medium">
-              {startLocation
-                ? `Start: ${startLocation.name}`
-                : "Select Starting Point"}
-            </Text>
-          </Pressable>
+          <View className="mt-5 flex-row justify-between space-x-4">
 
-          <Pressable
-            className="bg-white rounded-xl p-4 mb-3 border border-gray-300 shadow"
-            onPress={() =>
-              navigation.navigate("MapPicker", {
-                type: "destination",
-                existingStart: startLocation,
-                existingDestination: destinationLocation,
-              })
-            }
-          >
-            <Text className="text-base font-medium">
-              {destinationLocation
-                ? `Destination: ${destinationLocation.name}`
-                : "Select Destination"}
-            </Text>
-          </Pressable>
+            <Pressable
+              className="bg-gray-100 rounded-2xl p-4 w-44 items-center"
+              onPress={() =>
+                navigation.navigate("MapPicker", {
+                  type: "start",
+                  existingStart: startLocation,
+                  existingDestination: destinationLocation,
+                })
+              }
+            >
+              <Ionicons name="location-sharp" size={24} color="red" />
+              <Text className="text-xs font-bold text-center mt-1">
+                TODA /{"\n"}CURRENT LOCATION
+              </Text>
+              <View className="bg-yellow-200 rounded-lg px-4 py-2 mt-3">
+                <Text className="text-red-600 font-bold text-sm text-center"
+                numberOfLines={3}
+                ellipsizeMode="tail"
+                >
+                  {startLocation ? startLocation.name.toUpperCase() : "SELECT START POINT"}
+                </Text>
+              </View>
+            </Pressable>
 
-          
-        </View>
+
+            <Pressable
+              className="bg-gray-100 rounded-2xl p-4 w-44 items-center"
+              onPress={() =>
+                navigation.navigate("MapPicker", {
+                  type: "destination",
+                  existingStart: startLocation,
+                  existingDestination: destinationLocation,
+                })
+              }
+            >
+              <Ionicons name="location-sharp" size={24} color="red" />
+              <Text className="text-xs font-bold text-center mt-1">
+                TODA /{"\n"}DESTINATION
+              </Text>
+              <View className="bg-yellow-200 rounded-lg px-4 py-2 mt-3">
+                <Text className="text-red-600 font-bold text-sm text-center"
+                numberOfLines={3}
+                ellipsizeMode="tail"
+                >
+                  {destinationLocation
+                    ? destinationLocation.name.toUpperCase()
+                    : "SELECT DESTINATION"}
+                </Text>
+              </View>
+            </Pressable>
+          </View>
+
       </ScrollView>
     </DashboardLayout>
   );
