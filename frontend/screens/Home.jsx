@@ -16,7 +16,11 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import axios from "axios";
 import useLocationLogic from "../hooks/useLocationLogic";
 import { getRouteGeometryORS } from "../utils/getRouteGeometryORS";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { saveSearchToHistory } from "../utils/history";
 import { ORS_API_KEY } from '@env';
+
+
 export default function Home() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -46,7 +50,10 @@ export default function Home() {
           longitude: lng,
         }));
 
+        
+
         setRouteCoords(formattedCoords);
+        await saveSearchToHistory(startLocation, destinationLocation);
       } catch (error) {
         console.error("Failed to fetch route:", error);
         Alert.alert("Route error", "Unable to get directions.");
@@ -56,6 +63,10 @@ export default function Home() {
 
   fetchRoute();
 }, [startLocation, destinationLocation]);
+
+
+
+
 
   return (
     <DashboardLayout>
