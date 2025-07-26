@@ -37,7 +37,7 @@ export default function History() {
   return (
     <DashboardLayout>
       <View className="flex-1 bg-white">
-        <Text className="text-2xl font-bebas text-primary p-4">Search History</Text>
+        <Text className="text-2xl font-bebas text-primary p-4">History</Text>
         <FlatList
           data={history}
           keyExtractor={(_, index) => index.toString()}
