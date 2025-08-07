@@ -1,5 +1,5 @@
 import "../global.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -9,7 +9,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import MapView, { Marker, Polyline, UrlTile } from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Location from "expo-location";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -19,11 +19,12 @@ import { getRouteGeometryORS } from "../utils/getRouteGeometryORS";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { saveSearchToHistory } from "../utils/history";
 import { ORS_API_KEY } from '@env';
-
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function Home() {
   const navigation = useNavigation();
   const route = useRoute();
+  const mapRef = useRef(null);
   const {
     region,
     loading,
@@ -64,15 +65,23 @@ export default function Home() {
   fetchRoute();
 }, [startLocation, destinationLocation]);
 
+  useEffect(() => {
+    if (startLocation && destinationLocation && mapRef.current) {
+      mapRef.current.fitToCoordinates([startLocation, destinationLocation], {
+        edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+        animated: true,
+      });
+    }
+  }, [startLocation, destinationLocation]);
 
-
-
+  const { theme } = useTheme(); // ✅ Use theme
+  const isDark = theme === 'dark'; // ✅ Same logic as Settings
 
   return (
     <DashboardLayout>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
-        className="p-4 bg-white"
+        className={`p-4 ${isDark ? 'bg-gray-900' : 'bg-white'}`}
       >
         {fareData && (
         <View className=" flex-row flex-wrap justify-between space-x-8 ">
@@ -100,8 +109,9 @@ export default function Home() {
           <ActivityIndicator size="large" color="#C15353" />
         ) : (
           <MapView
+              ref={mapRef}
               style={{ width: "100%", height: 250 }}
-              region={region}
+              initialRegion={region}
             >
               {startLocation && (
                 <Marker coordinate={startLocation} title="Start" pinColor="green" />
@@ -109,7 +119,6 @@ export default function Home() {
               {destinationLocation && (
                 <Marker coordinate={destinationLocation} title="Destination" />
               )}
-
               {routeCoords.length > 0 && (
                 <Polyline
                   coordinates={routeCoords}
@@ -121,7 +130,7 @@ export default function Home() {
 
         )}
 
-          <View className="mt-5 flex-row justify-between space-x-4">
+          <View className="mt-5 mb-20 flex-row justify-between space-x-4">
 
             <Pressable
               className="bg-gray-100 rounded-2xl p-4 w-44 items-center"

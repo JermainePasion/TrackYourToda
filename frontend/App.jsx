@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import SelectLocation from "./components/SelectLocation";
 import { useFonts } from 'expo-font';
 import { BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,13 +28,15 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
-      <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="MainTabs" component={Navbar} />
-        <Stack.Screen name="MapPicker" component={MapPicker} />
-        <Stack.Screen name="SelectLocation" component={SelectLocation} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <StatusBar style="auto" />
+        <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="MainTabs" component={Navbar} />
+          <Stack.Screen name="MapPicker" component={MapPicker} />
+          <Stack.Screen name="SelectLocation" component={SelectLocation} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
