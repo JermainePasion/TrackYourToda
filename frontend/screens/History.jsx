@@ -3,25 +3,20 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { format } from "date-fns"; // Optional, for formatting timestamp
+import { format } from "date-fns"; 
 
 export default function History() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const loadHistory = async () => {
-      try {
-        const stored = await AsyncStorage.getItem("searchHistory");
-        if (stored) {
-          setHistory(JSON.parse(stored));
-        }
-      } catch (error) {
-        console.error("Failed to load history:", error);
-      }
-    };
+  const loadHistory = async () => {
+    const stored = await AsyncStorage.getItem("searchHistory");
+    console.log("Loaded history:", stored); // See what's really inside
+    if (stored) setHistory(JSON.parse(stored));
+  };
 
-    loadHistory();
-  }, []);
+  loadHistory();
+}, []);
 
   const renderItem = ({ item }) => (
     <View className="p-4 border-b border-gray-200">
@@ -29,7 +24,7 @@ export default function History() {
         {item.startName} → {item.destinationName}
       </Text>
       <Text className="text-sm text-gray-500">
-        {item.timestamp ? format(new Date(item.timestamp), "PPpp") : "Unknown date"}
+        {item.date ? format(new Date(item.date), "PPpp") : "Unknown date"}
       </Text>
     </View>
   );

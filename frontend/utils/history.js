@@ -1,22 +1,22 @@
 // utils/history.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const saveSearchToHistory = async (start, end) => {
-  const newEntry = {
-    startName: start.name,
-    destinationName: end.name,
-    date: new Date().toISOString(),
-  };
-
+export const saveSearchToHistory = async (startName, destinationName) => {
   try {
-    const existing = await AsyncStorage.getItem("searchHistory");
-    let history = existing ? JSON.parse(existing) : [];
+    const newEntry = {
+      startName,
+      destinationName,
+      timestamp: new Date().toISOString(),
+    };
 
-    history.unshift(newEntry); // add to start
-    if (history.length > 10) history = history.slice(0, 10); // keep only 10
+    const stored = await AsyncStorage.getItem("searchHistory");
+    const history = stored ? JSON.parse(stored) : [];
 
-    await AsyncStorage.setItem("searchHistory", JSON.stringify(history));
-  } catch (e) {
-    console.error("Failed to save history:", e);
+    const updatedHistory = [newEntry, ...history].slice(0, 10); // Keep last 10
+    await AsyncStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
+  } catch (error) {
+    console.error("Failed to save search to history:", error);
   }
+
+  console.log("Saving search:", startName, destinationName, new Date().toISOString());
 };
