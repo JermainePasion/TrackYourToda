@@ -14,7 +14,7 @@ export default function Settings() {
 
         <View className="mt-6 items-center">
           <Text className={`${isDark ? 'text-white' : 'text-black'} mb-2`}>
-            Dark Mode
+           Toggle Dark Mode
           </Text>
           <Switch value={isDark} onValueChange={toggleTheme} />
         </View>
