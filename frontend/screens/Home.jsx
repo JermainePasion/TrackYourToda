@@ -20,6 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { saveSearchToHistory } from "../utils/history";
 import { ORS_API_KEY } from '@env';
 import { useTheme } from "../contexts/ThemeContext";
+import { TouchableOpacity } from "react-native";
+import farematrix from "../utils/farematrix";
 
 export default function Home() {
   const navigation = useNavigation();
@@ -31,6 +33,7 @@ export default function Home() {
     startLocation,
     destinationLocation,
     fareData,
+    setFareData,
     setStartLocation,
     setDestinationLocation,
   } = useLocationLogic();
@@ -77,6 +80,24 @@ export default function Home() {
   const { theme } = useTheme(); // ✅ Use theme
   const isDark = theme === 'dark'; // ✅ Same logic as Settings
 
+  const [discountApplied, setDiscountApplied] = useState(false);
+
+  const toggleDiscount = () => {
+    if (!fareData) return;
+
+    // Find fare row from matrix based on distance
+    const fareRow = farematrix.find(row => fareData.distanceKm <= row.maxDistance);
+
+    if (fareRow) {
+      setFareData({
+        ...fareData,
+        fareToCharge: discountApplied ? fareRow.regularFare : fareRow.discountFare
+      });
+    }
+
+    setDiscountApplied(!discountApplied);
+  };
+
   return (
     <DashboardLayout>
       <ScrollView
@@ -86,21 +107,35 @@ export default function Home() {
         {fareData && (
         <View className=" flex-row flex-wrap justify-between space-x-8 ">
           <View className="flex-1 min-w-[48%] p-6 bg-gray-100 rounded-xl mb-4 mr-3 items-center">
-            <Text style={{
-              fontFamily: 'BebasNeue_400Regular',
-              color: 'black',
-            }} >DISTANCE:</Text>
-            <Text className= "mb-3 text-3xl text-[#643502]" >{fareData.distanceKm} KM</Text>
-            <Text>Duration:</Text>
-            <Text className= "mb-3 text-3xl text-[#643502]">{fareData.durationMinutes} MIN</Text>
-          </View>
-    
-          <View className="flex-1 min-w-[48%] p-6 bg-gray-100 rounded-xl mb-4 items-center">
-            <Text className="font-bold mb-1 ">AMOUNT</Text>
-            <Text className="font-bold text-green-700 text-4xl leading-[48px] tracking-wide">
-              ₱{fareData.fareToCharge.toFixed(2)}
-            </Text>
-          </View>
+              <Text style={{
+                fontFamily: 'BebasNeue_400Regular',
+                color: 'black',
+              }}>DISTANCE:</Text>
+              <Text className="mb-3 text-3xl text-[#643502]">
+                {fareData.distanceKm} KM
+              </Text>
+              <Text>Duration:</Text>
+              <Text className="mb-3 text-3xl text-[#643502]">
+                {fareData.durationMinutes} MIN
+              </Text>
+            </View>
+
+            {/* Amount card with discount toggle */}
+            <View className="flex-1 min-w-[48%] p-6 bg-gray-100 rounded-xl mb-4 items-center">
+              <Text className="font-bold mb-1">AMOUNT</Text>
+              <Text className="font-bold text-green-700 text-4xl leading-[48px] tracking-wide">
+                ₱{fareData.fareToCharge.toFixed(2)}
+              </Text>
+
+              <TouchableOpacity
+                onPress={toggleDiscount}
+                className="mt-4 px-4 py-2 bg-yellow-200 rounded-lg"
+              >
+                <Text className="text-red-600 font-bold">
+                  {discountApplied ? "Remove Discount" : "Apply Discount"}
+                </Text>
+              </TouchableOpacity>
+            </View>
         </View>
         )}  
 

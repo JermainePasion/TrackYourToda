@@ -122,6 +122,7 @@ export default function useLocationLogic() {
     startLocation,
     destinationLocation,
     fareData,
+    setFareData,
     setStartLocation,
     setDestinationLocation,
   };
